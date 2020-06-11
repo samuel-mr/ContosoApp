@@ -9,11 +9,11 @@
   <Identity
     Name="ContosoApp"
     Publisher="CN=Matteo Pagani, O=Matteo Pagani, L=Como, S=Como, C=IT"
-    Version="1.0.0.0" />
+    Version="1.0.1.0" />
 
   <Properties>
-    <DisplayName>Contoso App</DisplayName>
-    <PublisherDisplayName>Matteo Pagani</PublisherDisplayName>
+    <DisplayName>Medical Video Paquete</DisplayName>
+    <PublisherDisplayName>Samuel Martínez</PublisherDisplayName>
     <Logo>Images\StoreLogo.png</Logo>
   </Properties>
 
@@ -31,8 +31,8 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="Contoso App"
-        Description="Contoso App"
+        DisplayName="Medical Video App"
+        Description="Software para sincronizar los videos"
         BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
         Square44x44Logo="Images\Square44x44Logo.png">
