@@ -18,21 +18,15 @@ jobs:
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
     env:
-      Solution_Name: ContosoApp.sln                         # Replace with your solution name, i.e. MyWpfApp.sln.
-      Wap_Project_Directory: ContosoApp.Package     # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
-      Wap_Project_Path: ContosoApp.Package\ContosoApp.Package.wapproj # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
+      Solution_Name: ContosoApp.sln                
+      Wap_Project_Directory: ContosoApp.Package    
+      Wap_Project_Path: ContosoApp.Package\ContosoApp.Package.wapproj                  
 
     steps:
     - name: Checkout
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
-
-    # Install the .NET Core workload
-    - name: Install .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.101
 
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
@@ -43,17 +37,17 @@ jobs:
       run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
       env:
         Configuration: ${{ matrix.configuration }}
-
-
+        
+  
     # Create the app package by building and packaging the Windows Application Packaging project
     - name: Create the app package
-      run: msbuild $env:Wap_Project_Path /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:AppxBundlePlatforms=$env:Appx_Bundle_Platforms /p:GenerateAppInstallerFile=$env:Generate_AppInstaller /p:AppInstallerUri=$env:AppInstaller_Url
+      run: msbuild $env:Wap_Project_Path /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:GenerateAppInstallerFile=$env:Generate_AppInstaller /p:AppInstallerUri=$env:AppInstaller_Url
       env:
         Appx_Bundle: Always
-        Appx_Bundle_Platforms: neutral
+        Appx_Bundle_Platforms: x86|x64
         Appx_Package_Build_Mode: SideloadOnly
         Configuration: ${{ matrix.configuration }}
-        Generate_AppInstaller:  true 
+        Generate_AppInstaller: true
         AppInstaller_Url: https://gray-sand-0374b8a0f.azurestaticapps.net
 
 
@@ -63,9 +57,9 @@ jobs:
       with:
         name: MSIX Package
         path: ${{ env.Wap_Project_Directory }}\AppPackages
-        
+
   deploy:
-    needs: [build] ##ejecutar solo si el build ha terminado, si no estaría esta opcion lo ejecutaría en paraleleo
+    needs: [build]
     runs-on: ubuntu-latest
     name: Deploy Job
     steps:
@@ -86,3 +80,7 @@ jobs:
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "MSIX" # App source code path
           ###### End of Repository/Build Configurations ######
+
+
+
+  
